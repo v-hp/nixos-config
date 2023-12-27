@@ -27,10 +27,6 @@ vm/bootstrap-mbr:
 			services.openssh.settings.PermitRootLogin = \"yes\";\n \
 			users.users.root.initialPassword = \"root\";\n \
 			boot.loader.grub.device = \"/dev/vda\";\n \
-			users.users.${NIXUSER}=\{\n \
-				isNormalUser = true; \n \
-				extraGroups = [\"wheel\"];\n \
-			\}; \
 		' /mnt/etc/nixos/configuration.nix; \
 		nixos-install --no-root-passwd && reboot; \
 	"
