@@ -7,9 +7,12 @@
 
   programs.git = {
     enable = true;
-
     userName = "Vsevolod Palahuta";
     userEmail = "vsevolod.h.p@gmail.com";
+    signing = {
+      signByDefault = true;
+      key = "7C3A4C5612A61938";
+    };
   };
 
   home.packages = with pkgs; [
@@ -31,6 +34,7 @@
 
   programs.kitty = {
     enable = true;
+    extraConfig = builtins.readFile ./kitty;
   };
 
   xdg = {

@@ -45,10 +45,13 @@ vm/copy-config:
 		--rsync-path="sudo rsync" \
 		${MAKEFILE_DIR}/ ${NIXUSER}@${NIXADDR}:/nixos-config
 
-
 vm/copy-secrets:
 	rsync -av -e 'ssh ${SSH_OPTIONS} -p ${NIXPORT}' \
 	${HOME}/.ssh/ ${NIXUSER}@${NIXADDR}:~/.ssh
+	rsync -av -e 'ssh ${SSH_OPTIONS} -p ${NIXPORT}' \
+		--exclude='.#*' \
+		${HOME}/.gnupg/ ${NIXUSER}@${NIXADDR}:~/.gnupg
+
 
 vm/switch:
 	ssh ${SSH_OPTIONS} -p ${NIXPORT} ${NIXUSER}@${NIXADDR} " \

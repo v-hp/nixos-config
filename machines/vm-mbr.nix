@@ -16,6 +16,13 @@
     extraOptions = "experimental-features = nix-command flakes";
   };
 
+  fonts = {
+    fontDir.enable = true;
+    packages = with pkgs; [
+      monaspace
+    ];
+  };
+
   environment.systemPackages = with pkgs; [
     xclip
   ];
