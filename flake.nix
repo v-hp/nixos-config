@@ -16,7 +16,13 @@
       "vm-mbr" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./users/vsevolodp/home.nix
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.vsevolodp = import ./users/vsevolodp/home-manager.nix;
+          }
+
+          ./users/vsevolodp/nixos.nix
           ./machines/vm-mbr.nix
         ];
       };

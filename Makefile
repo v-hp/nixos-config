@@ -38,9 +38,9 @@ vm/bootstrap-mbr:
 vm/bootstrap-base:
 	NIXUSER=root ${MAKE} vm/copy-config
 	NIXUSER=root ${MAKE} vm/switch
-	${MAKE}/copy-secrets
-	ssh ${SSH_OPTIONS} -p ${NIXPORT} " \
-		sudo reboot \
+	${MAKE} vm/copy-secrets
+	ssh ${SSH_OPTIONS} -p ${NIXPORT} ${NIXUSER}@${NIXADDR} " \
+		sudo reboot; \
 	"
 
 vm/copy-config:
@@ -56,6 +56,5 @@ vm/copy-secrets:
 
 vm/switch:
 	ssh ${SSH_OPTIONS} -p ${NIXPORT} ${NIXUSER}@${NIXADDR} " \
-		nixos-rebuild switch --flake \"/nix-config#vm-mbr\" \
+		nixos-rebuild switch --flake \"/nixos-config#vm-mbr\" \
 	"
-

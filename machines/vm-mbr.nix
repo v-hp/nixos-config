@@ -23,6 +23,8 @@
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "America/Edmonton";
 
+  security.sudo.wheelNeedsPassword = false;
+
   services.xserver = {
     enable = true;
     layout = "us";
