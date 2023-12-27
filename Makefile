@@ -1,26 +1,12 @@
-# Some config values
 NIXUSER ?= vsevolodp
-# just from mitchelh
 NIXPORT ?= 22
 NIXADDR ?= unset
 
-# SSH options that are used. These aren't meant to be overridden but are
-# reused a lot so we just store them up here.
 SSH_OPTIONS = -o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-# bootstrap a brand new VM. The VM should have NixOS ISO on the CD drive
-# and just set the password of the root user to "root". This will install
-# NixOS. After installing NixOS, you must reboot and set the root password
-# for the next step.
-#
-# This configuration uses Bios (MBR), not UEFI (GPT). The disk is vda (not sda), since
-# we're using KVM
-
-# added users.users.${NIXUSER} to set up my user
-# requires extra step on vm, with -> sudo passwd ${NIXUSER} and setting the pass
 vm/bootstrap-mbr:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) root@$(NIXADDR) " \
 		parted /dev/vda -- mklabel msdos; \
@@ -51,15 +37,25 @@ vm/bootstrap-mbr:
 
 vm/bootstrap-base:
 	NIXUSER=root ${MAKE} vm/copy-config
-	NIXUSER=root ${MAKE} vm/copy-secrets
+	NIXUSER=root ${MAKE} vm/switch
+	${MAKE}/copy-secrets
+	ssh ${SSH_OPTIONS} -p ${NIXPORT} " \
+		sudo reboot \
+	"
 
 vm/copy-config:
 	rsync -av -e 'ssh ${SSH_OPTIONS} -p ${NIXPORT}' \
 		--exclude='.git/' \
 		--rsync-path="sudo rsync" \
-		${MAKEFILE_DIR}/ ${NIXUSER}@${NIXADDR}:/nix-config
+		${MAKEFILE_DIR}/ ${NIXUSER}@${NIXADDR}:/nixos-config
+
 
 vm/copy-secrets:
 	rsync -av -e 'ssh ${SSH_OPTIONS} -p ${NIXPORT}' \
 	${HOME}/.ssh/ ${NIXUSER}@${NIXADDR}:~/.ssh
+
+vm/switch:
+	ssh ${SSH_OPTIONS} -p ${NIXPORT} ${NIXUSER}@${NIXADDR} " \
+		nixos-rebuild switch --flake \"/nix-config#vm-mbr\" \
+	"
 
