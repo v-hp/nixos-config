@@ -7,7 +7,7 @@
   users.users.vsevolodp = {
     isNormalUser = true;
     home = "/home/vsevolodp";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "docker" "wheel" ];
     shell = pkgs.zsh;
     hashedPassword = "$6$7ylt6Y57b4ke37Iy$qt9dNvV0UGEQhVTBEK0Zhq7JrmyZoAC//yGGv9FUEvlkXJYtCr/xKcqaWmoSZwCDVAvWHp.yP9aeEvbkIDK4B1";
     openssh.authorizedKeys.keys = [

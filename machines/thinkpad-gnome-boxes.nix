@@ -61,5 +61,7 @@
   networking.hostName = "dev";
   networking.firewall.enable = false;
 
+  virtualisation.docker.enable = true;
+
   system.stateVersion = "23.11";
 }

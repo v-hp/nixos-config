@@ -19,7 +19,7 @@
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.vsevolodp = import ./users/vsevolodp/home-manager.nix;
+            home-manager.users.vsevolodp = import ./users/vsevolodp/home.nix;
           }
 
           ./users/vsevolodp/nixos.nix
