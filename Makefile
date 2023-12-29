@@ -7,7 +7,7 @@ SSH_OPTIONS = -o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o Stri
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-vm/bootstrap-mbr:
+vm/bootstrap-gnome-boxes:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) root@$(NIXADDR) " \
 		parted /dev/vda -- mklabel msdos; \
 		parted /dev/vda -- mkpart primary 1MB -8GB; \
@@ -55,5 +55,5 @@ vm/copy-secrets:
 
 vm/switch:
 	ssh ${SSH_OPTIONS} -p ${NIXPORT} ${NIXUSER}@${NIXADDR} " \
-		nixos-rebuild switch --flake \"/nixos-config#vm-mbr\" \
+		nixos-rebuild switch --flake \"/nixos-config#vm-gnome-boxes\" \
 	"

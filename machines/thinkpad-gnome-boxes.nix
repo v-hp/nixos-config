@@ -1,15 +1,11 @@
 { config, lib, pkgs, ... }:
 {
-  imports = [ ./hardware/vm-mbr.nix ];
+  imports = [ ./hardware/thinkpad-gnome-boxes.nix ];
 
-  boot = {
-    loader = {
-        grub.device = "/dev/vda";
-        grub.enable = true;
-    };
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/vda";
 
-    kernelPackages = pkgs.linuxPackages_latest;
-  };
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nix = {
     package = pkgs.nixUnstable;
@@ -25,6 +21,11 @@
 
   environment.systemPackages = with pkgs; [
     xclip
+    spice-vdagent
+    xorg.xrandr
+    (writeShellScriptBin "xrandr-auto" ''
+     xrandr --output Virtual-1 --auto
+     '')
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -35,6 +36,8 @@
   services.xserver = {
     enable = true;
     layout = "us";
+
+    videoDrivers = [ "qxl" ];
 
     displayManager = {
       defaultSession = "none+i3";
@@ -47,6 +50,8 @@
   };
 
   users.mutableUsers = false;
+
+  services.spice-vdagentd.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

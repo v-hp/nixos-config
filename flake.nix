@@ -13,7 +13,7 @@
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
     nixosConfigurations = {
-      "vm-mbr" = nixpkgs.lib.nixosSystem {
+      "vm-gnome-boxes" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           home-manager.nixosModules.home-manager {
@@ -23,7 +23,7 @@
           }
 
           ./users/vsevolodp/nixos.nix
-          ./machines/vm-mbr.nix
+          ./machines/thinkpad-gnome-boxes.nix
         ];
       };
     };
