@@ -49,7 +49,7 @@
   };
 
   services.gpg-agent = {
-    enable = isLinux;
+    enable = true;
     pinentryFlavor = "tty";
 
     # cache the keys forever so we don't get asked for a password
