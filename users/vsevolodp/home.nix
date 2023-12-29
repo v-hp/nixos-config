@@ -18,7 +18,6 @@
   };
 
   home.packages = with pkgs; [
-    neovim
     ripgrep
     fzf
     rofi
@@ -41,6 +40,39 @@
     extraConfig = builtins.readFile ./kitty;
   };
 
+  programs.tmux = {
+    enable = true;
+    terminal = "screen-256color";
+    mouse = true;
+    shortcut = "a";
+
+    plugins = with pkgs; [
+      {
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = "set -g @resurrect-capture-pane-contents 'on'";
+      }
+      {
+        plugin = tmuxPlugins.continuum;
+        extraConfig = "set -g @continuum-restore 'on'";
+      }
+      {
+        plugin = tmuxPlugins.power-theme;
+        extraConfig = "set -g @themepack 'powerline/default/cyan'";
+      }
+    ];
+  };
+
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+
+    extraConfig = ''
+      lua << EOF
+      ${builtins.readFile ./test.lua}
+    '';
+  };
+
   programs.gpg.enable = true;
 
   programs.go = {
@@ -58,6 +90,7 @@
   };
 
   xdg = {
+
     enable = true;
     configFile = {
       "i3/config".text = builtins.readFile ./i3;
