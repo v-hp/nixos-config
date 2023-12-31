@@ -1,8 +1,21 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   home.stateVersion = "23.11";
   home.username = "vsevolodp";
   home.homeDirectory = "/home/vsevolodp";
+
+  nixpkgs = {
+    overlays = [
+      (final: prev: {
+        vimPlugins = prev.vimPlugins // {
+          fugitive = prev.vimUtils.buildVimPlugin {
+            name = "fugitive";
+            src = inputs.fugitive;
+          };
+        };
+      })
+    ];
+  };
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -57,7 +70,7 @@
       }
       {
         plugin = tmuxPlugins.power-theme;
-        extraConfig = "set -g @themepack 'powerline/default/cyan'";
+        extraConfig = "set -g @tmux_power_theme '#2495db'";
       }
     ];
   };
@@ -66,10 +79,27 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
+    vimdiffAlias = true;
 
-    extraConfig = ''
-      lua << EOF
-      ${builtins.readFile ./test.lua}
+    plugins = with pkgs.vimPlugins; [
+      {
+        plugin = gruvbox-nvim;
+	      config = "colorscheme gruvbox";
+      }
+      comment-nvim
+      auto-pairs
+      {
+      	plugin = fugitive;
+        config = "lua << EOF\n${builtins.readFile ./nvim/plugins/fugitive.lua}";
+      }
+      {
+        plugin = lualine-nvim;
+        config = "${builtins.readFile ./nvim/plugins/lualine.lua}";
+      }
+    ];
+
+    extraLuaConfig = ''
+    	${builtins.readFile ./nvim/remap.lua}
     '';
   };
 

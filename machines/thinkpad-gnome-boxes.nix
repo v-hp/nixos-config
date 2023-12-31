@@ -24,6 +24,8 @@
     spice-vdagent
     xorg.xrandr
     (writeShellScriptBin "xrandr-auto" ''
+     spice-vdagent
+     sleep 1
      xrandr --output Virtual-1 --auto
      '')
   ];

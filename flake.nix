@@ -9,6 +9,12 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # vim stuff
+    fugitive = {
+      url = "github:tpope/vim-fugitive";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
@@ -20,6 +26,8 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.vsevolodp = import ./users/vsevolodp/home.nix;
+
+	    home-manager.extraSpecialArgs = { inherit inputs; };
           }
 
           ./users/vsevolodp/nixos.nix
