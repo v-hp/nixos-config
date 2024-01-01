@@ -88,25 +88,30 @@
       }
       {
         plugin = comment-nvim;
-        config = "lua << EOF\nrequire(\"Comment\").setup()\nEOF\n";
+        type = "lua";
+        config = "require(\"Comment\").setup()";
       }
       auto-pairs
       {
       	plugin = fugitive;
-        config = "lua << EOF\n${builtins.readFile ./nvim/plugins/fugitive.lua}\nEOF\n";
+        type = "lua";
+        config = "${builtins.readFile ./nvim/plugins/fugitive.lua}";
       }
       {
         plugin = lualine-nvim;
-        config = "lua << EOF\n${builtins.readFile ./nvim/plugins/lualine.lua}\nEOF\n";
+        type = "lua";
+        config = "${builtins.readFile ./nvim/plugins/lualine.lua}";
       }
       vim-tmux-navigator
       {
         plugin = undotree;
-        config = "lua << EOF\nvim.keymap.set(\"n\", \"<leader>u\", vim.cmd.UndotreeToggle)\nEOF\n";
+        type = "lua";
+        config = "vim.keymap.set(\"n\", \"<leader>u\", vim.cmd.UndotreeToggle)";
       }
       {
         plugin = lsp-zero-nvim;
-        config = "lua<< EOF\n${builtins.readFile ./nvim/plugins/lsp.lua}\nEOF\n";
+        type = "lua";
+        config = "${builtins.readFile ./nvim/plugins/lsp.lua}";
       }
       mason-nvim
       mason-lspconfig-nvim
@@ -123,6 +128,8 @@
     	${builtins.readFile ./nvim/remap.lua}
     '';
   };
+
+  programs.direnv.enable = true;
 
   programs.gpg.enable = true;
 
