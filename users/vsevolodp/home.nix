@@ -84,18 +84,39 @@
     plugins = with pkgs.vimPlugins; [
       {
         plugin = gruvbox-nvim;
-	      config = "colorscheme gruvbox";
+        config = "colorscheme gruvbox";
       }
-      comment-nvim
+      {
+        plugin = comment-nvim;
+        config = "lua << EOF\nrequire(\"Comment\").setup()\nEOF\n";
+      }
       auto-pairs
       {
       	plugin = fugitive;
-        config = "lua << EOF\n${builtins.readFile ./nvim/plugins/fugitive.lua}";
+        config = "lua << EOF\n${builtins.readFile ./nvim/plugins/fugitive.lua}\nEOF\n";
       }
       {
         plugin = lualine-nvim;
-        config = "${builtins.readFile ./nvim/plugins/lualine.lua}";
+        config = "lua << EOF\n${builtins.readFile ./nvim/plugins/lualine.lua}\nEOF\n";
       }
+      vim-tmux-navigator
+      {
+        plugin = undotree;
+        config = "lua << EOF\nvim.keymap.set(\"n\", \"<leader>u\", vim.cmd.UndotreeToggle)\nEOF\n";
+      }
+      {
+        plugin = lsp-zero-nvim;
+        config = "lua<< EOF\n${builtins.readFile ./nvim/plugins/lsp.lua}\nEOF\n";
+      }
+      mason-nvim
+      mason-lspconfig-nvim
+      nvim-lspconfig
+      nvim-cmp
+      cmp-buffer
+      cmp-path
+      cmp_luasnip
+      cmp-nvim-lsp
+      cmp-nvim-lua
     ];
 
     extraLuaConfig = ''
