@@ -122,6 +122,11 @@
       cmp_luasnip
       cmp-nvim-lsp
       cmp-nvim-lua
+      {
+        plugin = (nvim-treesitter.withPlugins (plugin: [plugin.go]));
+        type = "lua";
+        config = "${builtins.readFile ./nvim/plugins/treesitter.lua}";
+      }
     ];
 
     extraLuaConfig = ''
@@ -129,13 +134,25 @@
     '';
   };
 
-  programs.direnv.enable = true;
+  programs.direnv = {
+    enable = true;
+
+    config = {
+      whitelist = {
+        prefix= [
+          "$HOME/dev/go/src/github.com/v-hp"
+        ];
+
+        exact = ["$HOME/.envrc"];
+      };
+    };
+  };
 
   programs.gpg.enable = true;
 
   programs.go = {
     enable = true;
-    goPath = "code/go";
+    goPath = "dev/go";
   };
 
   services.gpg-agent = {
