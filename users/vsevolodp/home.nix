@@ -123,10 +123,19 @@
       cmp-nvim-lsp
       cmp-nvim-lua
       {
-        plugin = (nvim-treesitter.withPlugins (plugin: [plugin.go]));
+        plugin = (nvim-treesitter.withPlugins (plugin: with plugin; [
+          go
+          lua
+        ]));
         type = "lua";
         config = "${builtins.readFile ./nvim/plugins/treesitter.lua}";
       }
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = "${builtins.readFile ./nvim/plugins/telescope.lua}";
+      }
+      vim-devicons
     ];
 
     extraLuaConfig = ''
