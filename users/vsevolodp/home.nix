@@ -120,6 +120,7 @@
       cmp-buffer
       cmp-path
       cmp_luasnip
+      luasnip
       cmp-nvim-lsp
       cmp-nvim-lua
       {

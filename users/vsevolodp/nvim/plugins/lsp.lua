@@ -16,9 +16,6 @@ require('mason-lspconfig').setup({
     lsp.default_setup,
   },
 })
--- -- Fix Undefined global 'vim'
--- lsp.nvim_workspace()
-
 
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
