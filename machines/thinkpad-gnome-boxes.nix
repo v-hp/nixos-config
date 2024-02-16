@@ -15,7 +15,7 @@
   fonts = {
     fontDir.enable = true;
     packages = with pkgs; [
-      monaspace
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
   };
 
